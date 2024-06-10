@@ -26,22 +26,6 @@ def run():
     @bot.event
     async def on_connect():
         await load_extensions()
-    
-        
-    # @bot.command()
-    # async def survey(ctx):
-    #     view = SurveyView()
-    #     await ctx.send(view=view)
-        
-    #     await view.wait()
-        
-    #     results = {
-    #         "a1": view.answer1,
-    #         "a2": view.answer2,
-    #     }
-        
-    #     await ctx.send(f"{results}")
-    #     await ctx.message.author.send("Thank you for the particitation")
       
     bot.run(settings.DISCORD_TOKEN, root_logger=True)
     
