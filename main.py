@@ -3,7 +3,6 @@ import settings
 import discord 
 from discord.ext import commands
 import os
-#from info.menu import SurveyView
     
 logger = settings.logging.getLogger("bot")
 
@@ -18,10 +17,12 @@ def run():
     async def on_ready():
         logger.info(f"User: {bot.user} (ID: {bot.user.id})")
         await bot.tree.sync()
+
     
     async def load_extensions():
         await bot.load_extension('cogs.champ')
-        await bot.load_extension('cogs.direct_message')    
+        await bot.load_extension('cogs.direct_message') 
+        await bot.load_extension('cogs.menu')   
         
     @bot.event
     async def on_connect():

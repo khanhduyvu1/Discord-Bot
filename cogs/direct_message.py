@@ -7,7 +7,7 @@ class GetMessage(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    async def start(self, ctx):
+    async def DM(self, ctx):
         await ctx.message.author.send("Nothing here!")
 
 async def setup(bot):

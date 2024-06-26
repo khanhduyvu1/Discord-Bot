@@ -7,17 +7,17 @@ class getChamp(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    async def champ(self, ctx, *,champion_name: str):
-        image_embed = champion_image(champion_name)
-        response_embed = champion_response(champion_name)
-        #sua command 
-        if image_embed and response_embed:
-            # Combine both embeds into one
+    async def champ(self, ctx, *, champion_name: str):
+        champion_data = get_champion_data(champion_name)
+
+        if champion_data:
+            image_embed = champion_image(champion_name)
+            response_embed = champion_response(champion_name)
             image_embed.description = response_embed.description
             await ctx.send(embed=image_embed)
-
         else:
             await ctx.send(f"Champion '{champion_name}' not found.")
-
+               
+        
 async def setup(bot):
     await bot.add_cog(getChamp(bot))
