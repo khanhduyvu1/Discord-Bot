@@ -6,6 +6,7 @@ import logging
 load_dotenv()
 
 DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
+RESPONSE = os.getenv('LEAGUE_CHAT_ID')
 
 LOGGING_CONFIG = {
     "version": 1,
