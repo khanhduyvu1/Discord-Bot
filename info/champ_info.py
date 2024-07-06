@@ -1,13 +1,13 @@
 import requests
 import discord
 
-def get_champion_data(champions):
-    champ_url = f"https://ddragon.leagueoflegends.com/cdn/14.12.1/data/en_US/champion.json"
+def get_champion_data(champion_name):
+    champ_url = f"https://ddragon.leagueoflegends.com/cdn/14.13.1/data/en_US/champion/{champion_name}.json"
     response = requests.get(champ_url)
     data = response.json()
     # Extracting champion names
-    champions = [champion for champion in data['data'].keys()]
-    return champions
+    champion_data = data['data'].get(champion_name)
+    return champion_data
     
 def champion_image(champion_name):
     champion_data = get_champion_data(champion_name)
@@ -35,4 +35,15 @@ def champion_response(champion_name):
                     f"Movement Speed: {stats['movespeed']}\n")
         embed = discord.Embed(description=response)
         return embed
+    
+# async def get_champ(ctx, bot, champion_name: str):
+#     champion_data = get_champion_data(champion_name)
+
+#     if champion_data:
+#         image_embed = champion_image(champion_name)
+#         response_embed = champion_response(champion_name)
+#         image_embed.description = response_embed.description
+#         await ctx.send(embed=image_embed)
+#     else:
+#         await ctx.send(f"Champion '{champion_name}' not found.")
 

@@ -20,7 +20,6 @@ def run():
 
     
     async def load_extensions():
-        await bot.load_extension('cogs.champ')
         await bot.load_extension('cogs.direct_message') 
         await bot.load_extension('cogs.menu')   
         

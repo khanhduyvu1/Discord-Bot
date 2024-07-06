@@ -3,19 +3,8 @@ from discord.ext import commands
 from discord.ui import Button, Select, View, Modal, TextInput
 
 from cogs.button import StartButton
+from info.champ_info import get_champion_data, champion_image, champion_response
 
-
-# class ChampionModal(Modal):
-#     def __init__(self):
-#         super().__init__(title="Champion Details")
-#         self.add_item(TextInput(label="Champion Name", placeholder="Enter the name of the champion here"))
-
-#     async def callback(self, interaction: discord.Interaction):
-#         try:
-#             champion_name = self.children[0].value
-#             await interaction.response.send_message(f'You have entered: {champion_name}', ephemeral=True)
-#         except Exception as e:
-#             await interaction.followup.send_message(f'An error occurred: {str(e)}', ephemeral=True)
 
 
 
