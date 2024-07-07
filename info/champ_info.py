@@ -13,10 +13,10 @@ def champion_image(champion_name):
     champion_data = get_champion_data(champion_name)
     name = champion_data['name']
     title = champion_data['title']
-    base_url = "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/"
+    base_url = "https://ddragon.leagueoflegends.com/cdn/img/champion/tiles/"
     image_url = f"{base_url}{champion_name}_0.jpg"
     embed = discord.Embed(title=f"Champion: {name} - {title}")
-    embed.set_image(url=image_url)
+    embed.set_thumbnail(url=image_url)
     return embed
 
 def champion_response(champion_name):
@@ -36,14 +36,3 @@ def champion_response(champion_name):
         embed = discord.Embed(description=response)
         return embed
     
-# async def get_champ(ctx, bot, champion_name: str):
-#     champion_data = get_champion_data(champion_name)
-
-#     if champion_data:
-#         image_embed = champion_image(champion_name)
-#         response_embed = champion_response(champion_name)
-#         image_embed.description = response_embed.description
-#         await ctx.send(embed=image_embed)
-#     else:
-#         await ctx.send(f"Champion '{champion_name}' not found.")
-

@@ -1,4 +1,5 @@
 import discord
+import random
 
 from info.champ_info import get_champion_data, champion_image, champion_response
 
@@ -19,13 +20,18 @@ class SearchBox(discord.ui.Modal):
         # Call the get_champ function
         await get_champ(interaction, champion_name)
 
+def get_random_color():
+    return discord.Color.from_rgb(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+
 async def get_champ(interaction: discord.Interaction, champion_name: str):
     champion_data = get_champion_data(champion_name)
 
     if champion_data:
         image_embed = champion_image(champion_name)
         response_embed = champion_response(champion_name)
+
+        image_embed.color = get_random_color()
+        response_embed.color = get_random_color()
+
         image_embed.description = response_embed.description
         await interaction.response.send_message(embed=image_embed)
-    else:
-        await interaction.response.send_message(f"Champion '{champion_name}' not found.")
