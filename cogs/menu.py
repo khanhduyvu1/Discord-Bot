@@ -3,7 +3,6 @@ from discord.ext import commands
 from discord.ui import Button, Select, View, Modal, TextInput
 
 from cogs.button import StartButton
-from info.champ_info import get_champion_data, champion_image, champion_response
 
 
 

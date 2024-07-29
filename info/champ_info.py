@@ -1,8 +1,10 @@
 import requests
 import discord
+import os
 
 def get_champion_data(champion_name):
-    champ_url = f"https://ddragon.leagueoflegends.com/cdn/14.13.1/data/en_US/champion/{champion_name}.json"
+    version = os.getenv('VERSION')
+    champ_url = f"https://ddragon.leagueoflegends.com/cdn/{version}/data/en_US/champion/{champion_name}.json"
     response = requests.get(champ_url)
     data = response.json()
     # Extracting champion names
