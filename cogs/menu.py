@@ -17,7 +17,7 @@ class getMenu(commands.Cog):
         # view = View()
         # view.add_item(StartButton(timeout = 50))
         # await ctx.send("Click to start the menu", view=view)
-        view = StartButton(timeout = 3)
+        view = StartButton()
         message = await ctx.send(view=view)
         view.message = message
         

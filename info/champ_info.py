@@ -1,12 +1,17 @@
 import requests
 import discord
+import os
+
 
 def get_champion_data(champion_name):
-    champ_url = f"https://ddragon.leagueoflegends.com/cdn/14.13.1/data/en_US/champion/{champion_name}.json"
-    response = requests.get(champ_url)
-    data = response.json()
+    version = os.getenv("LEAGUE_VERSION")
+    champ_url = f"https://ddragon.leagueoflegends.com/cdn/{version}/data/en_US/champion.json"
+    response = requests.get(champ_url).json()
     # Extracting champion names
-    champion_data = data['data'].get(champion_name)
+    champion_data = response['data'].get(champion_name)
+    cc = response['data'].keys()
+    for c in cc:
+        print(c)
     return champion_data
     
 def champion_image(champion_name):
@@ -24,9 +29,9 @@ def champion_response(champion_name):
         
     if champion_data:
         
-        lore = champion_data['lore']
+        #lore = champion_data['lore']
         stats = champion_data['stats']
-        response = (f"**Lore:** {lore}\n\n"
+        response = (#f"**Lore:** {lore}\n\n"
                     f"**Stats:**\n"
                     f"HP: {stats['hp']}\n"
                     f"Attack Damage: {stats['attackdamage']}\n"
