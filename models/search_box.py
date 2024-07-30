@@ -35,3 +35,6 @@ async def get_champ(interaction: discord.Interaction, champion_name: str):
 
         image_embed.description = response_embed.description
         await interaction.response.send_message(embed=image_embed)
+    elif champion_data == None:
+        await interaction.response.send_message(f"champion {champion_name} not found")
+        
