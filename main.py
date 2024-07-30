@@ -1,10 +1,11 @@
-import asyncio
-import settings
 import discord 
 from discord.ext import commands
 import os
+from dotenv import load_dotenv
+load_dotenv()
     
-logger = settings.logging.getLogger("bot")
+DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
+RESPONSE = os.getenv('LEAGUE_CHAT_ID')
 
 def run():
     intents = discord.Intents.default()
@@ -15,7 +16,7 @@ def run():
     
     @bot.event 
     async def on_ready():
-        logger.info(f"User: {bot.user} (ID: {bot.user.id})")
+        print(f"User: {bot.user} (ID: {bot.user.id})")
         await bot.tree.sync()
 
     
@@ -27,7 +28,7 @@ def run():
     async def on_connect():
         await load_extensions()
       
-    bot.run(settings.DISCORD_TOKEN, root_logger=True)
+    bot.run(DISCORD_TOKEN)
     
 if __name__ == "__main__":
     run()
