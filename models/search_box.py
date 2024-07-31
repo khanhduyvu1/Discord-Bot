@@ -3,6 +3,21 @@ import random
 
 from info.champ_info import get_champion_data, champion_image, champion_response
 
+class AdditionalOptions(discord.ui.View):
+    def __init__(self, champion_name):
+        super().__init__()
+        self.champion_name = champion_name
+
+    @discord.ui.button(label="More Info", style=discord.ButtonStyle.blurple)
+    async def more_info(self, interaction: discord.Interaction, button: discord.ui.Button):
+        # Placeholder for fetching more detailed info
+        await interaction.response.send_message(f"Fetching more details for {self.champion_name}...")
+
+    @discord.ui.button(label="Another Action", style=discord.ButtonStyle.grey)
+    async def another_action(self, interaction: discord.Interaction, button: discord.ui.Button):
+        # Another placeholder action
+        await interaction.response.send_message("Performing another action...", ephemeral=True)
+
 class SearchBox(discord.ui.Modal):
     def __init__(self, title=None, placeholder=None, label=None):  # Default values for parameters
         super().__init__(title=title)
@@ -34,7 +49,8 @@ async def get_champ(interaction: discord.Interaction, champion_name: str):
         response_embed.color = get_random_color()
 
         image_embed.description = response_embed.description
-        await interaction.response.send_message(embed=image_embed)
+        view = AdditionalOptions(champion_name)
+        await interaction.response.send_message(embed=image_embed, view = view)
     elif champion_data == None:
         await interaction.response.send_message(f"champion {champion_name} not found")
         

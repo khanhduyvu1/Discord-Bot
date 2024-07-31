@@ -5,8 +5,6 @@ from discord.ui import Button, Select, View, Modal, TextInput
 from cogs.button import StartButton
 
 
-
-
 class getMenu(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -17,7 +15,7 @@ class getMenu(commands.Cog):
         # view.add_item(StartButton(timeout = 50))
         # await ctx.send("Click to start the menu", view=view)
         view = StartButton()
-        message = await ctx.send(view=view)
+        message = await ctx.message.author.send(view=view)
         view.message = message
         
         await view.wait()
