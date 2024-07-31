@@ -21,13 +21,12 @@ def run():
 
     
     async def load_extensions():
-        await bot.load_extension('cogs.direct_message') 
         await bot.load_extension('cogs.menu')   
         
     @bot.event
     async def on_connect():
         await load_extensions()
-      
+
     bot.run(DISCORD_TOKEN)
     
 if __name__ == "__main__":
