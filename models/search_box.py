@@ -1,22 +1,65 @@
 import discord
 import random
+from discord.ui import Button, View
 
-from info.champ_info import get_champion_data, champion_image, champion_response
+from info.champ_info import get_champion_data, champion_response
 
-class AdditionalOptions(discord.ui.View):
+# class AdditionalOptions(discord.ui.View):
+#     def __init__(self, champion_name):
+#         super().__init__()
+#         self.champion_name = champion_name
+
+#     @discord.ui.button(label="More Info", style=discord.ButtonStyle.blurple)
+#     async def more_info(self, interaction: discord.Interaction, button: discord.ui.Button):
+#         # Placeholder for fetching more detailed info
+#         await interaction.response.send_message(f"Fetching more details for {self.champion_name}...")
+
+#     @discord.ui.button(label="Another Action", style=discord.ButtonStyle.grey)
+#     async def another_action(self, interaction: discord.Interaction, button: discord.ui.Button):
+#         # Another placeholder action
+#         await interaction.response.send_message("Performing another action...", ephemeral=True)
+        
+class LevelView(View):
     def __init__(self, champion_name):
         super().__init__()
         self.champion_name = champion_name
+        self.level = 1
+        self.update_buttons()
+        
+    def update_buttons(self):
+        for item in self.children:
+            if item.label == "-1lv":
+                item.disabled = self.level == 1
+            elif item.label == "+1lv":
+                item.disabled = self.level == 18
 
-    @discord.ui.button(label="More Info", style=discord.ButtonStyle.blurple)
-    async def more_info(self, interaction: discord.Interaction, button: discord.ui.Button):
-        # Placeholder for fetching more detailed info
-        await interaction.response.send_message(f"Fetching more details for {self.champion_name}...")
+    async def update_embed(self, interaction: discord.Interaction):
+        self.update_buttons()
+        embed = champion_response(self.champion_name, self.level)
+        await interaction.response.edit_message(embed=embed, view=self)
 
-    @discord.ui.button(label="Another Action", style=discord.ButtonStyle.grey)
-    async def another_action(self, interaction: discord.Interaction, button: discord.ui.Button):
-        # Another placeholder action
-        await interaction.response.send_message("Performing another action...", ephemeral=True)
+    @discord.ui.button(label="-1lv", style=discord.ButtonStyle.primary)
+    async def previous_button(self, interaction: discord.Interaction, button: Button):
+        if self.level > 1:
+            self.level -= 1
+            await self.update_embed(interaction)
+
+    @discord.ui.button(label="+1lv", style=discord.ButtonStyle.primary)
+    async def next_button(self, interaction: discord.Interaction, button: Button):
+        if self.level < 18:
+            self.level += 1
+            await self.update_embed(interaction)
+    
+    @discord.ui.button(label="lv1", style=discord.ButtonStyle.primary)
+    async def lv1_button(self, interaction: discord.Interaction, button: Button):
+        self.level = 1
+        await self.update_embed(interaction)
+        
+    @discord.ui.button(label="lv18", style=discord.ButtonStyle.primary)
+    async def lv18_button(self, interaction: discord.Interaction, button: Button):
+        self.level = 18
+        await self.update_embed(interaction)
+
 
 class SearchBox(discord.ui.Modal):
     def __init__(self, title=None, placeholder=None, label=None):  # Default values for parameters
@@ -42,15 +85,12 @@ async def get_champ(interaction: discord.Interaction, champion_name: str):
     champion_data = get_champion_data(champion_name)
 
     if champion_data:
-        image_embed = champion_image(champion_name)
-        response_embed = champion_response(champion_name)
-
-        image_embed.color = get_random_color()
+        response_embed = champion_response(champion_name,1)
         response_embed.color = get_random_color()
-
-        image_embed.description = response_embed.description
-        view = AdditionalOptions(champion_name)
-        await interaction.response.send_message(embed=image_embed, view = view)
+        view = LevelView(champion_name)
+        
+        #view = AdditionalOptions(champion_name)
+        await interaction.response.send_message(embed=response_embed, view=view)
     elif champion_data == None:
         await interaction.response.send_message(f"champion {champion_name} not found")
         
