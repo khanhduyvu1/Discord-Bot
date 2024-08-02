@@ -1,17 +1,9 @@
 import discord
 from models.search_box import SearchBox
+from discord.ext import commands
 
 class StartButton(discord.ui.View):
     foo : bool = None
-    
-    async def disable_all_items(self):
-        for item in self.children:
-            item.disabled = True
-        await self.message.edit(view=self)
-    
-    async def on_timeout(self) -> None:
-        await self.message.channel.send("Timeout")
-        await self.disable_all_items()
     
     @discord.ui.button(label="Champion", 
                        style=discord.ButtonStyle.success)
@@ -36,3 +28,15 @@ class StartButton(discord.ui.View):
         await interaction.response.send_message(search_box)
         self.foo = False
         self.stop()
+        
+class getButton(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+
+    @commands.command()
+    async def start(self, ctx):
+        view = StartButton()
+        await ctx.message.author.send(view=view)
+
+async def setup(bot):
+    await bot.add_cog(getButton(bot))

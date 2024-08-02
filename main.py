@@ -21,7 +21,7 @@ def run():
 
     
     async def load_extensions():
-        await bot.load_extension('cogs.menu')   
+        await bot.load_extension('cogs.button')   
         
     @bot.event
     async def on_connect():
