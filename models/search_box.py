@@ -3,26 +3,41 @@ import random
 from discord.ui import Button, View
 
 from info.champ_info import get_champion_data, champion_response
+from info.skill_info import get_skill_data
 
-# class AdditionalOptions(discord.ui.View):
-#     def __init__(self, champion_name):
-#         super().__init__()
-#         self.champion_name = champion_name
+class Skill(discord.ui.Button):
+    def __init__(self, champion_name):
+        super().__init__(style=discord.ButtonStyle.red, label="Skill")
+        self.champion_name = champion_name
 
-#     @discord.ui.button(label="More Info", style=discord.ButtonStyle.blurple)
-#     async def more_info(self, interaction: discord.Interaction, button: discord.ui.Button):
-#         # Placeholder for fetching more detailed info
-#         await interaction.response.send_message(f"Fetching more details for {self.champion_name}...")
+    async def callback(self, interaction: discord.Interaction):
+        await interaction.response.defer(ephemeral=True)
+        skills_info = get_skill_data(self.champion_name)
+        total_embeds = len(skills_info)
+        for i, embed in enumerate(skills_info):
+            view = discord.ui.View()
+            if i == total_embeds - 1:  # Check if it's the last embed
+                view.add_item(NewChampion())
+            await interaction.followup.send(embed=embed, view=view)
+            
+class NewChampion(discord.ui.Button):
+    def __init__(self):
+        super().__init__(style=discord.ButtonStyle.green, label="New Champion")
 
-#     @discord.ui.button(label="Another Action", style=discord.ButtonStyle.grey)
-#     async def another_action(self, interaction: discord.Interaction, button: discord.ui.Button):
-#         # Another placeholder action
-#         await interaction.response.send_message("Performing another action...", ephemeral=True)
-        
+    async def callback(self, interaction: discord.Interaction):
+        search_box = SearchBox(
+            title="Champion Information",
+            placeholder="Please enter champion's name",
+            label="Champion"
+        )
+        await interaction.response.send_modal(search_box)
+    
 class LevelView(View):
     def __init__(self, champion_name):
         super().__init__()
         self.champion_name = champion_name
+        self.add_item(Skill(champion_name))
+        self.add_item(NewChampion())
         self.level = 1
         self.update_buttons()
         
@@ -60,14 +75,13 @@ class LevelView(View):
         self.level = 18
         await self.update_embed(interaction)
 
-
 class SearchBox(discord.ui.Modal):
     def __init__(self, title=None, placeholder=None, label=None):  # Default values for parameters
         super().__init__(title=title)
         self.add_item(discord.ui.TextInput(
             style=discord.TextStyle.short,
             label=label,
-            required=False,
+            required=True,
             placeholder=placeholder  # Using the placeholder parameter
         ))
 
@@ -77,6 +91,7 @@ class SearchBox(discord.ui.Modal):
         
         # Call the get_champ function
         await get_champ(interaction, champion_name)
+        
 
 def get_random_color():
     return discord.Color.from_rgb(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))

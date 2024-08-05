@@ -14,6 +14,8 @@ def get_champion_data(champion_name):
     data = response.json()
     cc = data['data'].keys()
     champion_name = validate_input(champion_name)
+    if champion_name == "wukong":
+        champion_name = "monkeyking"
     validated_champions = {validate_input(c): c for c in cc}
     if champion_name not in validated_champions:
         return None
@@ -48,7 +50,7 @@ def champion_response(champion_name, level):
         "hpregen": round(stats['hpregen'] + stats['hpregenperlevel'] * (level - 1), 3),
         "mpregen": round(stats['mpregen'] + stats['mpregenperlevel'] * (level - 1), 3)
     }   
-    
+     
     hp_emoji = os.getenv("HP_EMOJI")
     mp_emoji = os.getenv("MP_EMOJI")
     ad_emoji = os.getenv("AD_EMOJI")
