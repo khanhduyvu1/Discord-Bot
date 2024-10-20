@@ -25,7 +25,7 @@ class NewChampion(discord.ui.Button):
         super().__init__(style=discord.ButtonStyle.green, label="New Champion")
 
     async def callback(self, interaction: discord.Interaction):
-        search_box = SearchBox(
+        search_box = ChampSearchBox(
             title="Champion Information",
             placeholder="Please enter champion's name",
             label="Champion"
@@ -74,8 +74,8 @@ class LevelView(View):
     async def lv18_button(self, interaction: discord.Interaction, button: Button):
         self.level = 18
         await self.update_embed(interaction)
-
-class SearchBox(discord.ui.Modal):
+# for champion info
+class ChampSearchBox(discord.ui.Modal):
     def __init__(self, title=None, placeholder=None, label=None):  # Default values for parameters
         super().__init__(title=title)
         self.add_item(discord.ui.TextInput(
@@ -91,7 +91,6 @@ class SearchBox(discord.ui.Modal):
         
         # Call the get_champ function
         await get_champ(interaction, champion_name)
-        
 
 def get_random_color():
     return discord.Color.from_rgb(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))

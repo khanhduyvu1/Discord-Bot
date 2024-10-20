@@ -1,14 +1,28 @@
 import discord
-from models.search_box import SearchBox
+from models.champion_box import ChampSearchBox
+from models.player_box import PlayerSearchBox
 from discord.ext import commands
 
 class StartButton(discord.ui.View):
     foo : bool = None
     
+    @discord.ui.button(label="Player Info", 
+                       style=discord.ButtonStyle.primary)
+    async def Player_Info(self, interaction: discord.Interaction, button: discord.ui.Button):
+        search_box = PlayerSearchBox(
+            title="Player Information",
+            player_label="Player",
+            player_placeholder="Please enter Player: ",
+            player_tagline="Enter tagline"
+        )
+        await interaction.response.send_modal(search_box)
+        self.foo = True
+        self.stop()
+
     @discord.ui.button(label="Champion", 
                        style=discord.ButtonStyle.success)
     async def Champion(self, interaction: discord.Interaction, button: discord.ui.Button):
-        search_box = SearchBox(
+        search_box = ChampSearchBox(
             title="Champion Information",
             placeholder="Please enter champion's name",
             label="Champion"
@@ -17,17 +31,17 @@ class StartButton(discord.ui.View):
         self.foo = True
         self.stop()
         
-    @discord.ui.button(label="Items", 
-                       style=discord.ButtonStyle.red)
-    async def Items(self, interaction: discord.Interaction, button: discord.ui.Button):
-        search_box = SearchBox(
-            title="Item Information",
-            placeholder="Please enter item",
-            label="Items"
-        )
-        await interaction.response.send_message(search_box)
-        self.foo = False
-        self.stop()
+    # @discord.ui.button(label="Items", 
+    #                    style=discord.ButtonStyle.red)
+    # async def Items(self, interaction: discord.Interaction, button: discord.ui.Button):
+    #     search_box = SearchBox(
+    #         title="Item Information",
+    #         placeholder="Please enter item",
+    #         label="Items"
+    #     )
+    #     await interaction.response.send_message(search_box)
+    #     self.foo = False
+    #     self.stop()
         
 class getButton(commands.Cog):
     def __init__(self, bot):
